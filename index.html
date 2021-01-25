@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HIVE Upvote Tool</title>
+	<script src="https://cdn.jsdelivr.net/npm/@hiveio/hive-js/dist/hive.min.js"></script>
+	<script>
+		hive.api.setOptions({ url: 'https://anyx.io' });
+		hive.config.set('address_prefix','STM');
+		hive.config.set('chain_id','beeab0de00000000000000000000000000000000000000000000000000000000');
+		hive.config.set('alternative_api_endpoints', ['https://api.hive.blog', 'https://anyx.io']);
+	</script>
+	<style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+		.mypage {
+			width: 500px;
+			margin: 50px auto;
+			padding: 50px;
+			background: #BAB3B3;
+			border-radius: 5px;
+			box-shadow: 5px 0px 15px #000;
+			-moz-box-shadow: 5px 0px 15px #000;
+			-webkit-box-shadow: 5px 0px 15px #000;
+		}
+		
+		.mypage h1 {
+			color: #9D4242;
+			font-size: 20pt;
+			font-weight: 800;
+			padding: 10px;
+			margin: -40px -30px 10px;
+		}
+		.mypage input[type="text"],.mypage input[type="number"], input[type="password"] {
+			display: block;
+			width: 100%;
+			font: 17px Arial, Helvetica, sans-serif;
+			border: 0;
+			border-bottom: 2px solid #9D4242;
+			padding: 5px;
+			margin-bottom: 12px;
+			height: 40px;
+		}
+		#permlink:hover, #voter:hover, #wif:hover, #weight:hover {
+			border: 2px solid #9D4242;
+		}
+		.mypage input[type="button"] {
+			background-color: white;
+		    border: 2px solid #9D4242;
+		    display: inline-block;
+		    cursor: pointer;
+		    color: #9D4242;
+		    font-size: 18px;
+		    font-weight: 800;
+		    padding: 5px 10px;
+     	}
+		.mypage input[type="button"]:hover {
+			background: linear-gradient(to top left, #BAB3B3, #ffff);
+		}
+	</style>
+</head>
+<body>
+	<div class="mypage">
+		<h1><center>Hive Upvote</center></h1>
+
+
+		<input id='permlink' type='text' placeholder="Post Link"></input>
+		<input id='voter' type='text' placeholder="Voter Username"></input>
+		<input id='wif' type='password' placeholder="Private Posting Key"></input>
+		<input id='weight' type='number' placeholder="Vote Weight"></input>
+
+
+
+		<center><input type="button" value="UPVOTE" id='button' onclick="myUpvote()" /></button></center>
+	</div>
+
+	<script type="text/javascript">
+		function myUpvote(){
+			const wif = document.getElementById('wif').value;
+			const voter= document.getElementById('voter').value;
+			var pathArray = document.getElementById('permlink').value.split('/');
+			var permlink = pathArray[5];
+			var postAuthor = pathArray[4];
+			var author = postAuthor.substr(1);
+			var votevaluefinal = parseInt(document.getElementById('weight').value);
+			var weight = votevaluefinal * 100;
+			hive.broadcast.vote(wif, voter, author, permlink, weight, function(err, result) {
+  				if(err)
+  					alert("Fail " + err);
+  				else
+  					alert("Successfuly voted");
+			});
+		}
+	</script>
+</body>
+</html>
